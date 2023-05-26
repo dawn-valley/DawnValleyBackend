@@ -9,6 +9,13 @@ import fs from 'fs';
 
 require('dotenv').config();
 
+const getFileProps = (filePath: string) => {
+  const baseName: string = path.basename(filePath);
+  const extension: string = path.extname(baseName);
+  const fileName: string = baseName.replace(extension, '');
+  return { baseName, extension, fileName };
+}
+
 interface ICategory {
   id: string;
   key: Category;
@@ -69,24 +76,33 @@ const importMedia = async (category: ICategory) => {
     //   fs.mkdirSync(MEDIA_FOLDER_CATEGORY);
     // }
 
-    const importMediaFolder = `../mediaImport/batch01/${category.key}`;
-    const importMediaPath = path.resolve(__dirname, importMediaFolder);
+    const importMediaPath = path.resolve(__dirname, `../mediaImport/batch01/${category.key}`);
+    const importTargetPath = path.resolve(__dirname, `../media`);
 
     const promises = Array<Promise<any>>();
     fs.readdirSync(importMediaPath).forEach(async (file) => {
       if (IGNORE_FILES.find(e => e !== file)) {
         const filePath = path.resolve(__dirname, `${importMediaPath}/${file}`);
-        console.log(`import media file '${file}' from '${filePath}'`);
-        const promise = payload.create({
-          collection: 'media',
-          data: {
-            category: category.id,
-            // tags: IMPORT_TAGS,
-            description: path.basename(file),
-          },
-          filePath,
-        });
-        promises.push(promise);
+        const filePathTarget = path.resolve(__dirname, `${importTargetPath}/${file}`);
+        // if file exists, skip it
+        if (!fs.existsSync(filePathTarget)) {
+          console.log(`import media file '${file}' from '${filePath}'`);
+          const promise = payload.create({
+            collection: 'media',
+            data: {
+              // default title is the filename without extension
+              name: getFileProps(filePath).fileName,
+              category: category.id,
+              // tags: IMPORT_TAGS,
+              description: path.basename(file),
+            },
+            filePath,
+          });
+          promises.push(promise);
+        } {
+          // console.log(`skip import media file '${file}' from '${filePath}'`);
+          // TODO: if exists and don't have name defined, update name field
+        }
       }
     });
     console.log('launch promises');

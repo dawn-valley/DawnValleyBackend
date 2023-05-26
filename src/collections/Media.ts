@@ -24,6 +24,10 @@ const Media: CollectionConfig = {
   },
   fields: [
     {
+      name: 'name',
+      type: 'text',
+    },
+    {
       name: 'category',
       type: 'relationship',
       relationTo: 'categories'

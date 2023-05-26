@@ -11,8 +11,10 @@ touch .bak/${FILE_EXCLUDE}
 touch dist/${FILE_EXCLUDE}
 touch node_modules/${FILE_EXCLUDE}
 touch node_modules_local/${FILE_EXCLUDE}
-# touch importMedia/${FILE_EXCLUDE}
-# touch media/${FILE_EXCLUDE}
+touch media/${FILE_EXCLUDE}
+touch mediaImport/${FILE_EXCLUDE}
+touch mediaImportBad/${FILE_EXCLUDE}
+touch mediaImportNotUseful/${FILE_EXCLUDE}
 
 tar -zcvf $FILE \
 	--exclude-tag-all=${FILE_EXCLUDE} \
