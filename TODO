@@ -1,5 +1,21 @@
 Project:
+  ☐ create repository on github
   ☐ user roles in jwt
     ☐ admin_role, user_role
   ☐ i18n
-  
+  ☐ check duplicated tags
+    db.getCollection('tags').find({name: "princesa-janaina"})
+    // TODO: add to mongo notes - https://www.tutorialspoint.com/find-all-duplicate-documents-in-a-mongodb-collection-by-a-key-field
+    db.tags.aggregate([
+      {$group : { _id: "$name" , count : { $sum: 1}}},
+      {$match : { count : { $gt : 1 } }}
+    ])
+    // TODO: add to mongo notes - https://stackoverflow.com/a/18149149
+    db.media.find({ tags: { "$in" : [
+      "647125123d10da444ee0b4c9",
+      "647123ae3d10da444ee0b357"
+    ]}});
+
+git remote add origin https://github.com/dawn-valley/DawnValleyBackend.git
+git branch -M main
+git push -u origin main

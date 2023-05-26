@@ -166,7 +166,7 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode
 
 .bak/
-dbbak/
 media/
 mediaImport/
 mediaImportBad/
+!.dbbak/*.tgz

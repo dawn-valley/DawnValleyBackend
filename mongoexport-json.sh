@@ -26,12 +26,12 @@ do
   : 
   # without mongoexport installed locally
   # CMD="mongoexport --db "${DB}" --collection "${i}" --out "${DT}/${i}".json --jsonArray"
-  # echo $CMD
+  # printf "${CMD}\n"
   # $CMD
   # with mongoexport inside container
+  printf "\nexport  collection: ${i}\n"
   CMD="mongoexport --db "${DB}" --collection "${i}" --out "${DOCKER_TMP}/${i}".json --jsonArray"
   docker exec ${CONTAINER_ID} ${CMD}
-  pwd
   docker cp "${CONTAINER_ID}:${DOCKER_TMP}/${i}.json" "${DT}"
 done
 
@@ -39,6 +39,7 @@ done
 # CMD="ls -la ${DOCKER_TMP}"
 # docker exec ${CONTAINER_ID} ${CMD}
 
+printf "\npack files:\n"
 tar -czvf "${FILE}" "${DT}"
 rm "${DT}" -r
 cd ../..
